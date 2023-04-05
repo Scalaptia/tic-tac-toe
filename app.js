@@ -112,3 +112,16 @@ boxesEl.forEach(box => {
 
 let playerOne = Player("Fernando", "X")
 let playerTwo = Player("CPU", "O")
+
+
+/* UI ELEMENTS */
+
+const modal = document.querySelector(".modal")
+const modalContent = document.querySelector(".modal-content")
+
+modal.addEventListener("click", (event) => {
+    if(event.target.classList.contains("modal")) {
+        modal.classList.remove("open")
+        modalContent.classList.remove("open")
+    }
+})

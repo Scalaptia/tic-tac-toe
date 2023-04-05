@@ -24,7 +24,7 @@ body {
 
 /* GAME BOARD */
 .gameContainer {
-    height: calc(100vh - 200px);
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;

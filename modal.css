@@ -1,0 +1,91 @@
+.modal-content {
+    background-color: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 20px;
+    width: clamp(150px, 80%, 900px);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+}
+
+.modal {
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    transition: all 0.25s ease-in-out;
+}
+
+.modal.open, .modal-content.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Header */
+
+.header-container {
+    display: inline-block;
+}
+
+.header-container .text {
+    font-size: clamp(1rem, 3vw + 1rem, 4rem);
+    position: relative;
+    font-family: 'Source Code Pro', monospace; 
+}
+
+.text::before,
+.text::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.text::before {
+    background: white;
+    animation:
+        typewriter 2s steps(12) 1s forwards;
+}
+
+.text::after {
+    width: 0.04em;
+    background: black;
+    animation:
+        typewriter 2s steps(12) 1s forwards,
+        blink 750ms steps(12) infinite;
+}
+
+@keyframes typewriter {
+    to { left: 100% }
+}
+
+@keyframes blink {
+    to { background: transparent }
+}
+
+.header-container .subtitle {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: clamp(0.5rem, 3vw + 0.4rem, 2rem);
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(3rem);
+    animation: fadeInUp 2s 3.25s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
