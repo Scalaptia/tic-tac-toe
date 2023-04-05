@@ -9,7 +9,11 @@ const Player = (name, mark) => { // Player factory function
     }
 
 
-    return {name, mark, placeMark}
+    return {
+        name,
+        mark,
+        placeMark
+    }
 }
 
 const Gameboard = (() => { // Initiate gameboard module
@@ -22,7 +26,9 @@ const Gameboard = (() => { // Initiate gameboard module
         });
     }
 
-    return {showBoard}
+    return {
+        showBoard
+    }
 })()
 
 const Game = (() => { // Game logic module
@@ -38,13 +44,69 @@ const Game = (() => { // Game logic module
         }
     }
 
-    return {updateActivePlayer}
+    const checkRows = (mark) => {
+        if (
+            ((gameBoard[0] == mark) && (gameBoard[1] == mark) && (gameBoard[2] == mark)) ||
+            ((gameBoard[3] == mark) && (gameBoard[4] == mark) && (gameBoard[5] == mark)) ||
+            ((gameBoard[6] == mark) && (gameBoard[7] == mark) && (gameBoard[8] == mark))
+        ) {
+            return true;
+        }
+    }
+
+    const checkCols = (mark) => {
+        if (
+            ((gameBoard[0] == mark) && (gameBoard[3] == mark) && (gameBoard[6] == mark)) ||
+            ((gameBoard[1] == mark) && (gameBoard[4] == mark) && (gameBoard[7] == mark)) ||
+            ((gameBoard[2] == mark) && (gameBoard[5] == mark) && (gameBoard[8] == mark))
+        ) {
+            return true;
+        }
+    }
+
+    const checkDiags = (mark) => {
+        if (
+            ((gameBoard[0] == mark) && (gameBoard[4] == mark) && (gameBoard[8] == mark)) ||
+            ((gameBoard[2] == mark) && (gameBoard[4] == mark) && (gameBoard[6] == mark)) 
+        ) {
+            return true;
+        }
+    }
+
+    const checkWin = () => {
+        if ((checkRows(playerOne.mark) || checkCols(playerOne.mark) || checkDiags(playerOne.mark)) == true){
+            console.log("Player One WIN")
+            
+        } else if ((checkRows(playerTwo.mark) || checkCols(playerTwo.mark) || checkDiags(playerTwo.mark)) == true){
+            console.log("Player Two WIN")
+            
+        } else {
+            let count = 0
+            boxesEl.forEach(box => {
+                if(box.childNodes.length != 0) {
+                    count++
+                }
+            })
+    
+            if (count == 9) {
+                console.log("Game Finished TIE")
+            }
+        }
+    }
+
+    return {
+        updateActivePlayer,
+        checkWin
+    }
 })()
 
 boxesEl.forEach(box => {
     box.addEventListener("click", () => {
-        Game.updateActivePlayer().placeMark(box.id.substring(4))
-        Gameboard.showBoard()
+        if (box.childNodes.length === 0){ // Check if box is empty
+            Game.updateActivePlayer().placeMark(box.id.substring(4))
+            Gameboard.showBoard()
+            Game.checkWin()
+        }
     })
 })
 
