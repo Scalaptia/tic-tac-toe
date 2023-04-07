@@ -1,13 +1,9 @@
 gameBoard = ["", "", "", "", "", "", "", "", ""]
 
-const boardEl = document.querySelector("#gameBoard")
-const boxesEl = document.querySelectorAll(".board-box")
-
 const Player = (name, mark) => { // Player factory function
     const placeMark = (box) => {
         gameBoard.splice((box-1), 1, mark) // Add mark to gameBoard array
     }
-
 
     return {
         name,
@@ -26,13 +22,19 @@ const Gameboard = (() => { // Initiate gameboard module
         });
     }
 
+    const clearBoard = () => {
+        gameBoard = ["", "", "", "", "", "", "", "", ""]
+        Gameboard.showBoard()
+    }
+
     return {
-        showBoard
+        showBoard,
+        clearBoard
     }
 })()
 
 const Game = (() => { // Game logic module
-    let activePlayer = 1
+    let activePlayer = 2
 
     const updateActivePlayer = () => {
         if (activePlayer == 1) {
@@ -74,11 +76,16 @@ const Game = (() => { // Game logic module
     }
 
     const checkWin = () => {
+        let gameEnd = false
+        let winner
+
         if ((checkRows(playerOne.mark) || checkCols(playerOne.mark) || checkDiags(playerOne.mark)) == true){
-            console.log("Player One WIN")
+            winner = playerOne.name
+            gameEnd = true
             
         } else if ((checkRows(playerTwo.mark) || checkCols(playerTwo.mark) || checkDiags(playerTwo.mark)) == true){
-            console.log("Player Two WIN")
+            winner = playerTwo.name
+            gameEnd = true
             
         } else {
             let count = 0
@@ -89,17 +96,29 @@ const Game = (() => { // Game logic module
             })
     
             if (count == 9) {
-                console.log("Game Finished TIE")
+                winner = "Tie"
+                gameEnd = true
             }
         }
+
+        if (gameEnd) {
+            WinnerModal.showModal(winner)
+        }
+    }
+
+    const restartGame = () => {
+        WinnerModal.hideModal()
+        Modal.showModal()
     }
 
     return {
         updateActivePlayer,
-        checkWin
+        checkWin,
+        restartGame
     }
 })()
 
+const boxesEl = document.querySelectorAll(".board-box")
 boxesEl.forEach(box => {
     box.addEventListener("click", () => {
         if (box.childNodes.length === 0){ // Check if box is empty
@@ -110,18 +129,72 @@ boxesEl.forEach(box => {
     })
 })
 
-let playerOne = Player("Fernando", "X")
-let playerTwo = Player("CPU", "O")
-
-
 /* UI ELEMENTS */
 
-const modal = document.querySelector(".modal")
-const modalContent = document.querySelector(".modal-content")
+const Modal = (() => {
+    const modalEl = document.querySelector(".modal")
+    const modalContent = document.querySelector(".modal-content")
+    
+    const showModal = () => {
+        modalEl.classList.add("open")
+        modalContent.classList.add("open")
+    }
 
-modal.addEventListener("click", (event) => {
-    if(event.target.classList.contains("modal")) {
-        modal.classList.remove("open")
+    const hideModal = () => {
+        modalEl.classList.remove("open")
         modalContent.classList.remove("open")
     }
+
+    return {
+        showModal,
+        hideModal
+    }
+})()
+
+const WinnerModal = (() => {
+    const modalEl = document.querySelector(".modal")
+    const winnerContent = document.querySelector(".winner-content")
+
+    const showModal = (winner) => {
+        modalEl.classList.add("open")
+        winnerContent.classList.add("open")
+        if (winner == "Tie") {
+            console.log(`Tie!`)
+            winnerContent.firstElementChild.innerHTML = `Tie!`
+        } else {
+            console.log(`The winner is ${winner}!`)
+            winnerContent.firstElementChild.innerHTML = `The winner is <b style="color: #68AAE6">${winner}</b>!`
+        }
+    }
+
+    const hideModal = () => {
+        modalEl.classList.remove("open")
+        winnerContent.classList.remove("open")
+    }
+
+    return {
+        showModal,
+        hideModal
+    }
+})()
+
+const chooseXBtn = document.querySelector(".x-mark")
+const chooseOBtn = document.querySelector(".o-mark")
+const restartBtn = document.querySelector(".restart-game")
+
+chooseXBtn.addEventListener("click", () => {
+    playerOne = Player("Player One", "X")
+    playerTwo = Player("Bot", "O")
+    Modal.hideModal()
+})
+
+chooseOBtn.addEventListener("click", () => {
+    playerOne = Player("Player One", "O")
+    playerTwo = Player("Bot", "X")
+    Modal.hideModal()
+})
+
+restartBtn.addEventListener("click", () => {
+    Game.restartGame()
+    Gameboard.clearBoard()
 })

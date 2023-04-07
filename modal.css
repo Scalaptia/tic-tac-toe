@@ -1,4 +1,5 @@
-.modal-content {
+.modal-content, .winner-content {
+    text-align: center;
     background-color: white;
     position: fixed;
     top: 50%;
@@ -25,7 +26,7 @@
     transition: all 0.25s ease-in-out;
 }
 
-.modal.open, .modal-content.open {
+.open {
     opacity: 1;
     pointer-events: all;
 }
@@ -66,14 +67,6 @@
         blink 750ms steps(12) infinite;
 }
 
-@keyframes typewriter {
-    to { left: 100% }
-}
-
-@keyframes blink {
-    to { background: transparent }
-}
-
 .header-container .subtitle {
     color: rgba(0, 0, 0, 0.7);
     font-size: clamp(0.5rem, 3vw + 0.4rem, 2rem);
@@ -83,9 +76,69 @@
     animation: fadeInUp 2s 3.25s forwards;
 }
 
+.choice-container {
+    overflow: hidden;
+    height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: dropDown 1s ease-in-out 5.25s forwards;
+}
+
+@keyframes typewriter {
+    to { left: 100% }
+}
+
+@keyframes blink {
+    to { background: transparent }
+}
+
 @keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes dropDown {
+    to {
+        height: 50vh;
+    }
+}
+
+.marks {
+    display: grid;
+    grid-template-columns: repeat(2, clamp(5rem, 15vw + 3rem, 20rem));
+    gap: 20px;
+}
+
+.x-mark, .o-mark {
+    font-family: 'Prompt', sans-serif;
+    font-size: clamp(1rem, 3vw + 1rem, 4rem);
+    color: rgba(0, 0, 0, 0.85);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    width: clamp(5rem, 15vw + 3rem, 20rem);
+    height: clamp(5rem, 15vw + 3rem, 20rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.x-mark:hover, .o-mark:hover {
+    background-color: rgb(238, 238, 238);
+}
+
+/* Results Modal */
+
+.winner {
+    font-size: clamp(1rem, 3vw + 1rem, 3rem);
+}
+
+.restart-game {
+    margin-top: 30px;
+    padding: 0.5em;
+    border: none;
+    border-radius: 10px;
+    font-size: clamp(1.25rem, 2vw + 0.4rem, 2rem);
 }
