@@ -40,7 +40,7 @@ body {
     gap: 20px;
 }
 
-.player-one-score, .player-two-score {
+.player-1-score, .player-2-score {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,16 +57,23 @@ body {
     margin-top: 10px;
     font-size: 25px;
     padding: 20px;
-    border: 2px solid black;
     border-radius: 10px;
 }
 
-.player-one-score > .player-score {
+.player-1-score > .player-score {
     background-color: rgba(101, 168, 230, 0.75);
 }
 
-.player-two-score > .player-score {
+.player-2-score > .player-score {
     background-color: rgba(173, 228, 96, 0.75);
+}
+
+.player-1-score > .active-player {
+    outline: 3px solid rgb(59, 97, 133);
+}
+
+.player-2-score > .active-player {
+    outline: 3px solid rgb(91, 121, 50);
 }
 
 #game-board {
@@ -94,4 +101,12 @@ body {
 
 .board-box:hover {
     background-color: rgb(238, 238, 238);
+}
+
+.player-1 > .board-box:hover {
+    background-color: rgba(101, 168, 230, 0.25);
+}
+
+.player-2 > .board-box:hover {
+    background-color: rgba(173, 228, 96, 0.25);
 }

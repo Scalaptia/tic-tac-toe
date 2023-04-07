@@ -30,7 +30,12 @@ const WinnerModal = (() => {
             winnerContent.firstElementChild.innerHTML = `Tie!`
         } else {
             console.log(`The winner is ${winner}!`)
-            winnerContent.firstElementChild.innerHTML = `The winner is <b style="color: #68AAE6">${winner}</b>!`
+            if (winner == playerOne.name) {
+                winnerContent.firstElementChild.innerHTML = `The winner is <b style="color: rgba(101, 168, 230, 0.75)">${winner}</b>!`
+            } else if (winner == playerTwo.name) {
+                winnerContent.firstElementChild.innerHTML = `The winner is <b style="color: rgba(173, 228, 96, 0.75)">${winner}</b>!`
+            }
+
         }
     }
 
@@ -50,15 +55,17 @@ const chooseOBtn = document.querySelector(".o-mark")
 const restartBtn = document.querySelector(".restart-game")
 
 chooseXBtn.addEventListener("click", () => {
-    playerOne = Player("Player One", "X")
-    playerTwo = Player("Bot", "O")
+    playerOne = Player("Player One", "X", 1)
+    playerTwo = Player("Bot", "O", 2)
+    Game.setActivePlayer(playerOne)
     Modal.hideModal()
     Gameboard.updateScoreDisplay()
 })
 
 chooseOBtn.addEventListener("click", () => {
-    playerOne = Player("Player One", "O")
-    playerTwo = Player("Bot", "X")
+    playerOne = Player("Bot", "X", 1)
+    playerTwo = Player("Player One", "O", 2)
+    Game.setActivePlayer(playerOne)
     Modal.hideModal()
     Gameboard.updateScoreDisplay()
 })

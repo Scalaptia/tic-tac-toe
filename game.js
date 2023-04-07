@@ -1,7 +1,9 @@
 gameBoard = ["", "", "", "", "", "", "", "", ""]
+const gameBoardEl = document.getElementById("game-board")
 
-const Player = (name, mark) => { // Player factory function
+const Player = (name, mark, playerNumber) => { // Player factory function
     let score = 0
+    let scoreEl = document.querySelector(`.player-${playerNumber}-score`)
 
     const placeMark = (box) => {
         gameBoard.splice((box-1), 1, mark) // Add mark to gameBoard array
@@ -10,15 +12,14 @@ const Player = (name, mark) => { // Player factory function
     return {
         name,
         mark,
+        playerNumber,
         score,
+        scoreEl,
         placeMark
     }
 }
 
 const Gameboard = (() => { // Initiate gameboard module
-    const playerOneScoreEl = document.querySelector(".player-one-score")
-    const playerTwoScoreEl = document.querySelector(".player-two-score")
-
     const showBoard = () => {
         let boxCount = 1
         gameBoard.forEach(element => {
@@ -34,10 +35,10 @@ const Gameboard = (() => { // Initiate gameboard module
     }
 
     const updateScoreDisplay = () => {
-        playerOneScoreEl.firstElementChild.innerHTML = playerOne.name
-        playerOneScoreEl.lastElementChild.innerHTML = playerOne.score
-        playerTwoScoreEl.firstElementChild.innerHTML = playerTwo.name
-        playerTwoScoreEl.lastElementChild.innerHTML = playerTwo.score
+        playerOne.scoreEl.firstElementChild.innerHTML = playerOne.name
+        playerOne.scoreEl.lastElementChild.innerHTML = playerOne.score
+        playerTwo.scoreEl.firstElementChild.innerHTML = playerTwo.name
+        playerTwo.scoreEl.lastElementChild.innerHTML = playerTwo.score
     }
 
     return {
@@ -48,16 +49,24 @@ const Gameboard = (() => { // Initiate gameboard module
 })()
 
 const Game = (() => { // Game logic module
-    let activePlayer = 2
+    let activePlayer
+
+    const setActivePlayer = (player) => {
+        Game.activePlayer = player
+        Game.activePlayer.scoreEl.lastElementChild.classList.add("active-player")
+        gameBoardEl.classList.add(`player-${Game.activePlayer.playerNumber}`)
+    }
 
     const updateActivePlayer = () => {
-        if (activePlayer == 1) {
-            activePlayer = 2
-            return playerTwo
+        Game.activePlayer.scoreEl.lastElementChild.classList.remove("active-player")
+        gameBoardEl.classList.remove(`player-${Game.activePlayer.playerNumber}`)
+        if (Game.activePlayer == playerOne) {
+            Game.activePlayer = playerTwo
         } else {
-            activePlayer = 1
-            return playerOne
+            Game.activePlayer = playerOne
         }
+        Game.activePlayer.scoreEl.lastElementChild.classList.add("active-player")
+        gameBoardEl.classList.add(`player-${Game.activePlayer.playerNumber}`)
     }
 
     const checkRows = (mark) => {
@@ -92,14 +101,15 @@ const Game = (() => { // Game logic module
     const checkWin = () => {
         let roundEnd = false, gameEnd = false
         let roundWinner, gameWinner
+        const winnerEl = document.querySelector(".winner")
 
         if ((checkRows(playerOne.mark) || checkCols(playerOne.mark) || checkDiags(playerOne.mark)) == true){
-            roundWinner = playerOne.name
+            roundWinner = playerOne
             playerOne.score++
             roundEnd = true
             
         } else if ((checkRows(playerTwo.mark) || checkCols(playerTwo.mark) || checkDiags(playerTwo.mark)) == true){
-            roundWinner = playerTwo.name
+            roundWinner = playerTwo
             playerTwo.score++
             roundEnd = true
             
@@ -138,11 +148,14 @@ const Game = (() => { // Game logic module
     }
 
     const restartGame = () => {
+        activePlayer = ""
         WinnerModal.hideModal()
         Modal.showModal()
     }
 
     return {
+        activePlayer,
+        setActivePlayer,
         updateActivePlayer,
         checkWin,
         restartGame
@@ -153,9 +166,10 @@ const boxesEl = document.querySelectorAll(".board-box")
 boxesEl.forEach(box => {
     box.addEventListener("click", () => {
         if (box.childNodes.length === 0){ // Check if box is empty
-            Game.updateActivePlayer().placeMark(box.id.substring(4))
+            Game.activePlayer.placeMark(box.id.substring(4))
             Gameboard.showBoard()
             Game.checkWin()
+            Game.updateActivePlayer()
         }
     })
 })
