@@ -52,22 +52,36 @@ const WinnerModal = (() => {
 
 const chooseXBtn = document.querySelector(".x-mark")
 const chooseOBtn = document.querySelector(".o-mark")
-const restartBtn = document.querySelector(".restart-game")
+const startBtn = document.querySelector(".start-btn")
+const restartBtn = document.querySelector(".restart-btn")
+const nameInputEl = document.getElementById("name-input")
 
 chooseXBtn.addEventListener("click", () => {
-    playerOne = Player("Player One", "X", 1)
-    playerTwo = Player("Bot", "O", 2)
-    Game.setActivePlayer(playerOne)
-    Modal.hideModal()
-    Gameboard.updateScoreDisplay()
+    chooseOBtn.classList.remove("selected-mark")
+    chooseXBtn.classList.add("selected-mark")
+    selectedMark = "X"
 })
 
 chooseOBtn.addEventListener("click", () => {
-    playerOne = Player("Bot", "X", 1)
-    playerTwo = Player("Player One", "O", 2)
-    Game.setActivePlayer(playerOne)
-    Modal.hideModal()
-    Gameboard.updateScoreDisplay()
+    chooseXBtn.classList.remove("selected-mark")
+    chooseOBtn.classList.add("selected-mark")
+    selectedMark = "O"
+})
+
+startBtn.addEventListener("click", () => {
+    if (nameInputEl.value && selectedMark) {
+        if (selectedMark == "X") {
+            playerOne = Player(`${nameInputEl.value}`, "X", 1)
+            playerTwo = Player("Bot", "O", 2)
+        } else if (selectedMark == "O") {
+            playerOne = Player("Bot", "X", 1)
+            playerTwo = Player(`${nameInputEl.value}`, "O", 2)
+        }
+
+        Game.setActivePlayer(playerOne)
+        Modal.hideModal()
+        Gameboard.updateScoreDisplay()
+    }
 })
 
 restartBtn.addEventListener("click", () => {

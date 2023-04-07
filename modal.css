@@ -80,8 +80,10 @@
     overflow: hidden;
     height: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 20px;
     animation: dropDown 1s ease-in-out 5.25s forwards;
 }
 
@@ -102,13 +104,13 @@
 
 @keyframes dropDown {
     to {
-        height: 50vh;
+        height: 55vh;
     }
 }
 
 .marks {
     display: grid;
-    grid-template-columns: repeat(2, clamp(5rem, 15vw + 3rem, 20rem));
+    grid-template-columns: repeat(2, clamp(3rem, 10vw + 2rem, 10rem));
     gap: 20px;
 }
 
@@ -118,15 +120,50 @@
     color: rgba(0, 0, 0, 0.85);
     border: 2px solid rgba(0, 0, 0, 0.8);
     border-radius: 10px;
-    width: clamp(5rem, 15vw + 3rem, 20rem);
-    height: clamp(5rem, 15vw + 3rem, 20rem);
+    width: clamp(3rem, 10vw + 2rem, 10rem);
+    height: clamp(3rem, 10vw + 2rem, 10rem);
     display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s all ease-in-out;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.x-mark:hover, .o-mark:hover {
+.name-input {
+    height: 20px;
+    width: clamp(6rem, 20vw + 4rem, 20rem);
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 500;
+    transition: 0.2s all ease-in-out;
+}
+
+.start-btn, .restart-btn {
+    margin-top: 30px;
+    padding: 0.5em;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    font-size: clamp(1rem, 2vw + 0.4rem, 1.5rem);
+    transition: 0.2s all ease-in-out;
+}
+
+.x-mark:hover, .o-mark:hover, .start-btn:hover, .restart-btn:hover, .name-input:hover {
     background-color: rgb(238, 238, 238);
+}
+
+.x-mark.selected-mark {
+    background-color: rgba(101, 168, 230, 0.25);
+}
+.o-mark.selected-mark {
+    background-color: rgba(173, 228, 96, 0.25);
 }
 
 /* Results Modal */
@@ -135,10 +172,12 @@
     font-size: clamp(1rem, 3vw + 1rem, 3rem);
 }
 
-.restart-game {
-    margin-top: 30px;
-    padding: 0.5em;
-    border: none;
-    border-radius: 10px;
-    font-size: clamp(1.25rem, 2vw + 0.4rem, 2rem);
+/* Mobile */
+
+@media only screen and (max-width: 600px) and (orientation: portrait) {
+    @keyframes dropDown {
+        to {
+            height: 40vh;
+        }
+    }
 }
