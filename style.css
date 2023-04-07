@@ -23,14 +23,53 @@ body {
 
 
 /* GAME BOARD */
-.gameContainer {
+.game-container {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-#gameBoard {
+#score-display {
+    margin-bottom: 50px;
+    width: 50vh;
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.player-one-score, .player-two-score {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-name {
+    font-size: 25px;
+}
+
+.player-score {
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 900;
+    margin-top: 10px;
+    font-size: 25px;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.player-one-score > .player-score {
+    background-color: rgba(101, 168, 230, 0.75);
+}
+
+.player-two-score > .player-score {
+    background-color: rgba(173, 228, 96, 0.75);
+}
+
+#game-board {
     height: 50vh;
     width: 50vh;
     display: grid;

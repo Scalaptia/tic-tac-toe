@@ -1,6 +1,8 @@
 gameBoard = ["", "", "", "", "", "", "", "", ""]
 
 const Player = (name, mark) => { // Player factory function
+    let score = 0
+
     const placeMark = (box) => {
         gameBoard.splice((box-1), 1, mark) // Add mark to gameBoard array
     }
@@ -8,11 +10,15 @@ const Player = (name, mark) => { // Player factory function
     return {
         name,
         mark,
+        score,
         placeMark
     }
 }
 
 const Gameboard = (() => { // Initiate gameboard module
+    const playerOneScoreEl = document.querySelector(".player-one-score")
+    const playerTwoScoreEl = document.querySelector(".player-two-score")
+
     const showBoard = () => {
         let boxCount = 1
         gameBoard.forEach(element => {
@@ -27,9 +33,17 @@ const Gameboard = (() => { // Initiate gameboard module
         Gameboard.showBoard()
     }
 
+    const updateScoreDisplay = () => {
+        playerOneScoreEl.firstElementChild.innerHTML = playerOne.name
+        playerOneScoreEl.lastElementChild.innerHTML = playerOne.score
+        playerTwoScoreEl.firstElementChild.innerHTML = playerTwo.name
+        playerTwoScoreEl.lastElementChild.innerHTML = playerTwo.score
+    }
+
     return {
         showBoard,
-        clearBoard
+        clearBoard,
+        updateScoreDisplay
     }
 })()
 
@@ -76,16 +90,18 @@ const Game = (() => { // Game logic module
     }
 
     const checkWin = () => {
-        let gameEnd = false
-        let winner
+        let roundEnd = false, gameEnd = false
+        let roundWinner, gameWinner
 
         if ((checkRows(playerOne.mark) || checkCols(playerOne.mark) || checkDiags(playerOne.mark)) == true){
-            winner = playerOne.name
-            gameEnd = true
+            roundWinner = playerOne.name
+            playerOne.score++
+            roundEnd = true
             
         } else if ((checkRows(playerTwo.mark) || checkCols(playerTwo.mark) || checkDiags(playerTwo.mark)) == true){
-            winner = playerTwo.name
-            gameEnd = true
+            roundWinner = playerTwo.name
+            playerTwo.score++
+            roundEnd = true
             
         } else {
             let count = 0
@@ -96,13 +112,28 @@ const Game = (() => { // Game logic module
             })
     
             if (count == 9) {
-                winner = "Tie"
-                gameEnd = true
+                roundWinner = "Tie"
+                roundEnd = true
             }
         }
 
+        if (playerOne.score == 3) {
+            gameWinner = playerOne.name
+            gameEnd = true
+        } else if (playerTwo.score == 3) {
+            gameWinner = playerTwo.name
+            gameEnd = true
+        }
+
         if (gameEnd) {
-            WinnerModal.showModal(winner)
+            WinnerModal.showModal(gameWinner)
+            playerOne.name = ""
+            playerOne.score = 0
+            playerTwo.name = ""
+            playerTwo.score = 0
+        } else if (roundEnd) {
+            Gameboard.clearBoard()
+            Gameboard.updateScoreDisplay()
         }
     }
 
@@ -127,74 +158,4 @@ boxesEl.forEach(box => {
             Game.checkWin()
         }
     })
-})
-
-/* UI ELEMENTS */
-
-const Modal = (() => {
-    const modalEl = document.querySelector(".modal")
-    const modalContent = document.querySelector(".modal-content")
-    
-    const showModal = () => {
-        modalEl.classList.add("open")
-        modalContent.classList.add("open")
-    }
-
-    const hideModal = () => {
-        modalEl.classList.remove("open")
-        modalContent.classList.remove("open")
-    }
-
-    return {
-        showModal,
-        hideModal
-    }
-})()
-
-const WinnerModal = (() => {
-    const modalEl = document.querySelector(".modal")
-    const winnerContent = document.querySelector(".winner-content")
-
-    const showModal = (winner) => {
-        modalEl.classList.add("open")
-        winnerContent.classList.add("open")
-        if (winner == "Tie") {
-            console.log(`Tie!`)
-            winnerContent.firstElementChild.innerHTML = `Tie!`
-        } else {
-            console.log(`The winner is ${winner}!`)
-            winnerContent.firstElementChild.innerHTML = `The winner is <b style="color: #68AAE6">${winner}</b>!`
-        }
-    }
-
-    const hideModal = () => {
-        modalEl.classList.remove("open")
-        winnerContent.classList.remove("open")
-    }
-
-    return {
-        showModal,
-        hideModal
-    }
-})()
-
-const chooseXBtn = document.querySelector(".x-mark")
-const chooseOBtn = document.querySelector(".o-mark")
-const restartBtn = document.querySelector(".restart-game")
-
-chooseXBtn.addEventListener("click", () => {
-    playerOne = Player("Player One", "X")
-    playerTwo = Player("Bot", "O")
-    Modal.hideModal()
-})
-
-chooseOBtn.addEventListener("click", () => {
-    playerOne = Player("Player One", "O")
-    playerTwo = Player("Bot", "X")
-    Modal.hideModal()
-})
-
-restartBtn.addEventListener("click", () => {
-    Game.restartGame()
-    Gameboard.clearBoard()
 })

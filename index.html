@@ -12,11 +12,14 @@
     </style>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="modal.css">
+    <script src="game.js" defer></script>
+    <script src="ui.js" defer></script>
+    <script src="main.js" defer></script>
     <title>Tic Tac Toe</title>
 </head>
 <body>
-    <div class="modal open"></div>
-    <div class="modal-content open">
+    <div class="modal"></div>
+    <div class="modal-content">
         <div class="header-container">
             <p class="text">Tic Tac Toe.</p>
             <p class="subtitle">Choose your mark</p>
@@ -33,8 +36,19 @@
         <button class="restart-game">Restart</button>
     </div>
 
-    <div class="gameContainer">
-        <div id="gameBoard">
+    <div class="game-container">
+        <div id="score-display">
+            <div class="player-one-score">
+                <p class="player-name">Player One</p>
+                <p class="player-score">0</p>
+            </div>
+            <div class="player-two-score">
+                <p class="player-name">Bot</p>
+                <p class="player-score">0</p>
+            </div>
+        </div>
+
+        <div id="game-board">
             <div class="board-box" id="box-1"></div>
             <div class="board-box" id="box-2"></div>
             <div class="board-box" id="box-3"></div>
@@ -46,7 +60,5 @@
             <div class="board-box" id="box-9"></div>
         </div>
     </div>
-
-    <script src="app.js" defer></script>
 </body>
 </html>
