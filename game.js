@@ -1,4 +1,4 @@
-gameBoard = ["", "", "", "", "", "", "", "", ""]
+let gameBoard = ["", "", "", "", "", "", "", "", ""]
 const gameBoardEl = document.getElementById("game-board")
 
 const Player = (name, mark, playerNumber) => { // Player factory function
@@ -50,6 +50,26 @@ const Gameboard = (() => { // Initiate gameboard module
 
 const Game = (() => { // Game logic module
     let activePlayer
+    let isBotTurn
+
+    const makeMove = (box) => {
+        if (!Game.isBotTurn) {
+            Game.activePlayer.placeMark(box)
+            Gameboard.showBoard()
+            Game.checkWin()
+            Game.updateActivePlayer()
+        }
+        
+        if (Game.isBotTurn) {
+            setTimeout(() => {
+                box = Bot.randomMove()
+                Game.activePlayer.placeMark(box)
+                Gameboard.showBoard()
+                Game.checkWin()
+                Game.updateActivePlayer()
+            }, 1000)
+        }
+    }
 
     const setActivePlayer = (player) => {
         Game.activePlayer = player
@@ -60,13 +80,12 @@ const Game = (() => { // Game logic module
     const updateActivePlayer = () => {
         Game.activePlayer.scoreEl.lastElementChild.classList.remove("active-player")
         gameBoardEl.classList.remove(`player-${Game.activePlayer.playerNumber}`)
-        if (Game.activePlayer == playerOne) {
-            Game.activePlayer = playerTwo
-        } else {
-            Game.activePlayer = playerOne
-        }
+        Game.activePlayer = (Game.activePlayer === playerOne) ? playerTwo : playerOne
+
         Game.activePlayer.scoreEl.lastElementChild.classList.add("active-player")
         gameBoardEl.classList.add(`player-${Game.activePlayer.playerNumber}`)
+
+        Game.isBotTurn = !Game.isBotTurn
     }
 
     const checkRows = (mark) => {
@@ -148,17 +167,19 @@ const Game = (() => { // Game logic module
     }
 
     const restartGame = () => {
-        activePlayer = ""
+        Game.activePlayer = ""
         WinnerModal.hideModal()
         Modal.showModal()
     }
 
     return {
+        makeMove,
         activePlayer,
         setActivePlayer,
         updateActivePlayer,
         checkWin,
-        restartGame
+        restartGame,
+        isBotTurn
     }
 })()
 
@@ -166,10 +187,7 @@ const boxesEl = document.querySelectorAll(".board-box")
 boxesEl.forEach(box => {
     box.addEventListener("click", () => {
         if (box.childNodes.length === 0){ // Check if box is empty
-            Game.activePlayer.placeMark(box.id.substring(4))
-            Gameboard.showBoard()
-            Game.checkWin()
-            Game.updateActivePlayer()
+            Game.makeMove(box.id.substring(4))
         }
     })
 })

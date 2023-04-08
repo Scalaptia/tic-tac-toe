@@ -60,12 +60,14 @@ chooseXBtn.addEventListener("click", () => {
     chooseOBtn.classList.remove("selected-mark")
     chooseXBtn.classList.add("selected-mark")
     selectedMark = "X"
+    Game.isBotTurn = false
 })
 
 chooseOBtn.addEventListener("click", () => {
     chooseXBtn.classList.remove("selected-mark")
     chooseOBtn.classList.add("selected-mark")
     selectedMark = "O"
+    Game.isBotTurn = true
 })
 
 startBtn.addEventListener("click", () => {
@@ -81,6 +83,9 @@ startBtn.addEventListener("click", () => {
         Game.setActivePlayer(playerOne)
         Modal.hideModal()
         Gameboard.updateScoreDisplay()
+        if (Game.isBotTurn) {
+            Game.makeMove()
+        }
     }
 })
 

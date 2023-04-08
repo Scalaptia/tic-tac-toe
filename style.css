@@ -103,10 +103,10 @@ body {
     background-color: rgb(238, 238, 238);
 }
 
-.player-1 > .board-box:hover {
+/* .player-1 > .board-box:hover {
     background-color: rgba(101, 168, 230, 0.25);
 }
 
 .player-2 > .board-box:hover {
     background-color: rgba(173, 228, 96, 0.25);
-}
+} */

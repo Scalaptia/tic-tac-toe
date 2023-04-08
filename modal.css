@@ -136,6 +136,7 @@
 }
 
 .name-input {
+    outline: none;
     height: 20px;
     width: clamp(6rem, 20vw + 4rem, 20rem);
     border: 2px solid black;
@@ -155,7 +156,7 @@
     transition: 0.2s all ease-in-out;
 }
 
-.x-mark:hover, .o-mark:hover, .start-btn:hover, .restart-btn:hover, .name-input:hover {
+.x-mark:hover, .o-mark:hover, .start-btn:hover, .restart-btn:hover{
     background-color: rgb(238, 238, 238);
 }
 
