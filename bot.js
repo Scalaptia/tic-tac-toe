@@ -60,9 +60,7 @@ const Bot = (() => {
         let bestScore = -Infinity
         let move
         for (let box = 0; box < 9; box++) { 
-            console.log(`Checking box ${box}`)
             if (gameBoard[box] === "") {
-                console.log(`Box ${box} is available`)
                 bot.placeMark(box)          // Do move
                 let score = minimax(0, false)             // Check board
                 gameBoard[box] = ""                       // Undo move
@@ -70,9 +68,6 @@ const Bot = (() => {
                     bestScore = score
                     move = box
                 }
-            }
-            else {
-                console.log(`Box ${box} is not empty`)
             }
         }
         return move
@@ -86,15 +81,12 @@ const Bot = (() => {
 
     const minimax = (depth, isMaximizing) => {
         let result = checkBotWin()
-        console.log(`The result is ${result}`)
 
         if (result !== null) {     // If its a win/loss, return score
-            console.log("The game finishes")
             return scores[result]
         }
 
         if (isMaximizing) {  // Check if its bots turn
-            console.log("Is maximizing is true")
             let bestScore = -Infinity
             for (let box = 0; box < 9; box++) {
                 if (gameBoard[box] == "") {

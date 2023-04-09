@@ -26,10 +26,8 @@ const WinnerModal = (() => {
         modalEl.classList.add("open")
         winnerContent.classList.add("open")
         if (winner == "Tie") {
-            console.log(`Tie!`)
             winnerContent.firstElementChild.innerHTML = `Tie!`
         } else {
-            console.log(`The winner is ${winner}!`)
             if (winner == playerOne.name) {
                 winnerContent.firstElementChild.innerHTML = `The winner is <b style="color: rgba(101, 168, 230, 0.75)">${winner}</b>!`
             } else if (winner == playerTwo.name) {

@@ -6,7 +6,6 @@ const Player = (name, mark, playerNumber) => { // Player factory function
     let scoreEl = document.querySelector(`.player-${playerNumber}-score`)
 
     const placeMark = (box) => {
-        console.log(`${Game.activePlayer.name} is placing ${Game.activePlayer.mark} inside ${box}`)
         gameBoard.splice((box), 1, mark) // Add mark to gameBoard array
     }
 
@@ -192,8 +191,10 @@ const Game = (() => { // Game logic module
 const boxesEl = document.querySelectorAll(".board-box")
 boxesEl.forEach(box => {
     box.addEventListener("click", () => {
-        if (box.childNodes.length === 0){ // Check if box is empty
-            Game.makeMove(box.id.substring(4))
+        if (!Game.isBotTurn) {
+            if (box.childNodes.length === 0){ // Check if box is empty
+                Game.makeMove(box.id.substring(4))
+            }
         }
     })
 })
