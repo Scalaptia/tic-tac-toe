@@ -110,3 +110,27 @@ body {
 .player-2 > .board-box:hover {
     background-color: rgba(173, 228, 96, 0.25);
 } */
+
+@media only screen and (max-width: 600px) and (orientation: portrait) {
+    body {
+        display: flex;
+        justify-content: center;
+    }
+
+    .board-box:hover {
+        background-color: white;
+    }
+
+    #score-display {
+        width: 90vw;
+    }
+
+    .game-container {
+        width: 90vw;
+    }
+
+    #game-board {
+        height: 90vw;
+        width: 90vw;
+    }
+}
