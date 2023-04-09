@@ -6,7 +6,8 @@ const Player = (name, mark, playerNumber) => { // Player factory function
     let scoreEl = document.querySelector(`.player-${playerNumber}-score`)
 
     const placeMark = (box) => {
-        gameBoard.splice((box-1), 1, mark) // Add mark to gameBoard array
+        console.log(`${Game.activePlayer.name} is placing ${Game.activePlayer.mark} inside ${box}`)
+        gameBoard.splice((box), 1, mark) // Add mark to gameBoard array
     }
 
     return {
@@ -21,7 +22,7 @@ const Player = (name, mark, playerNumber) => { // Player factory function
 
 const Gameboard = (() => { // Initiate gameboard module
     const showBoard = () => {
-        let boxCount = 1
+        let boxCount = 0
         gameBoard.forEach(element => {
             let box = document.querySelector(`#box-${boxCount}`)
             box.innerHTML = element
@@ -62,7 +63,7 @@ const Game = (() => { // Game logic module
         
         if (Game.isBotTurn) {
             setTimeout(() => {
-                box = Bot.randomMove()
+                box = Bot.bestMove()
                 Game.activePlayer.placeMark(box)
                 Gameboard.showBoard()
                 Game.checkWin()
@@ -119,27 +120,25 @@ const Game = (() => { // Game logic module
 
     const checkWin = () => {
         let roundEnd = false, gameEnd = false
-        let roundWinner, gameWinner
-        const winnerEl = document.querySelector(".winner")
+        let roundWinner = null, gameWinner = null
 
         if ((checkRows(playerOne.mark) || checkCols(playerOne.mark) || checkDiags(playerOne.mark)) == true){
-            roundWinner = playerOne
+            roundWinner = playerOne.mark
             playerOne.score++
             roundEnd = true
             
         } else if ((checkRows(playerTwo.mark) || checkCols(playerTwo.mark) || checkDiags(playerTwo.mark)) == true){
-            roundWinner = playerTwo
+            roundWinner = playerTwo.mark
             playerTwo.score++
             roundEnd = true
             
         } else {
             let count = 0
-            boxesEl.forEach(box => {
-                if(box.childNodes.length != 0) {
+            for (let box = 0; box < 9; box++) { 
+                if (gameBoard[box] !== "") {
                     count++
                 }
-            })
-    
+            }
             if (count == 9) {
                 roundWinner = "Tie"
                 roundEnd = true
@@ -164,6 +163,8 @@ const Game = (() => { // Game logic module
             Gameboard.clearBoard()
             Gameboard.updateScoreDisplay()
         }
+
+        return roundWinner // Returns null || "Tie" || winner.mark
     }
 
     const restartGame = () => {
@@ -177,6 +178,9 @@ const Game = (() => { // Game logic module
         activePlayer,
         setActivePlayer,
         updateActivePlayer,
+        checkRows,
+        checkCols,
+        checkDiags,
         checkWin,
         restartGame,
         isBotTurn

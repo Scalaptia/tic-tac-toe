@@ -75,9 +75,14 @@ startBtn.addEventListener("click", () => {
         if (selectedMark == "X") {
             playerOne = Player(`${nameInputEl.value}`, "X", 1)
             playerTwo = Player("Bot", "O", 2)
+            human = playerOne
+            bot = playerTwo
+
         } else if (selectedMark == "O") {
             playerOne = Player("Bot", "X", 1)
             playerTwo = Player(`${nameInputEl.value}`, "O", 2)
+            human = playerTwo
+            bot = playerOne
         }
 
         Game.setActivePlayer(playerOne)
