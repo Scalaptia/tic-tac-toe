@@ -34,13 +34,36 @@ const Bot = (() => {
     }
 
     const bestMove = () => {
+        let count = 0
+
+        for (let box = 0; box < 9; box++) {   // Check if board is empty
+            if (gameBoard[box] == "") {
+                count++
+            }
+        }
+
+        if (count == 9) {
+            let randomIndex = Math.floor(Math.random() * 4);
+
+            switch (randomIndex) {   // Place in random corner
+                case 0:
+                    return 0
+                case 1:
+                    return 2
+                case 2:
+                    return 6
+                case 3:
+                    return 8
+            }
+        }
+
         let bestScore = -Infinity
         let move
         for (let box = 0; box < 9; box++) { 
             console.log(`Checking box ${box}`)
             if (gameBoard[box] === "") {
                 console.log(`Box ${box} is available`)
-                Game.activePlayer.placeMark(box)          // Do move
+                bot.placeMark(box)          // Do move
                 let score = minimax(0, false)             // Check board
                 gameBoard[box] = ""                       // Undo move
                 if (score > bestScore) {
@@ -75,9 +98,9 @@ const Bot = (() => {
             let bestScore = -Infinity
             for (let box = 0; box < 9; box++) {
                 if (gameBoard[box] == "") {
-                    bot.placeMark(box)                  // Do move for bot
-                    let score = minimax(depth + 1, false)             // Check board
-                    gameBoard[box] = ""                               // Undo move
+                    bot.placeMark(box) // Do move for bot
+                    let score = minimax(depth + 1, false) // Check board
+                    gameBoard[box] = "" // Undo move
                     bestScore = Math.max(score, bestScore)
                 }
             }
@@ -86,9 +109,9 @@ const Bot = (() => {
             let bestScore = Infinity
             for (let box = 0; box < 9; box++) {
                 if (gameBoard[box] == "") {
-                    human.placeMark(box)                          // Do move for human
-                    let score = minimax(depth + 1, true)   // Check board
-                    gameBoard[box] = ""                               // Undo move
+                    human.placeMark(box) // Do move for human
+                    let score = minimax(depth + 1, true)
+                    gameBoard[box] = ""
                     bestScore = Math.min(score, bestScore)
                 }
             }

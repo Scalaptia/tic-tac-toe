@@ -85,7 +85,7 @@ startBtn.addEventListener("click", () => {
             bot = playerOne
         }
 
-        Game.setActivePlayer(playerOne)
+        Game.setActivePlayer()
         Modal.hideModal()
         Gameboard.updateScoreDisplay()
         if (Game.isBotTurn) {

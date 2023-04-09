@@ -64,7 +64,7 @@ const Game = (() => { // Game logic module
         if (Game.isBotTurn) {
             setTimeout(() => {
                 box = Bot.bestMove()
-                Game.activePlayer.placeMark(box)
+                bot.placeMark(box)
                 Gameboard.showBoard()
                 Game.checkWin()
                 Game.updateActivePlayer()
@@ -72,10 +72,12 @@ const Game = (() => { // Game logic module
         }
     }
 
-    const setActivePlayer = (player) => {
-        Game.activePlayer = player
-        Game.activePlayer.scoreEl.lastElementChild.classList.add("active-player")
-        gameBoardEl.classList.add(`player-${Game.activePlayer.playerNumber}`)
+    const setActivePlayer = () => {
+        Game.activePlayer = playerOne
+        playerTwo.scoreEl.lastElementChild.classList.remove("active-player")
+        playerOne.scoreEl.lastElementChild.classList.add("active-player")
+        gameBoardEl.classList.remove(`player-2`)
+        gameBoardEl.classList.add(`player-1`)
     }
 
     const updateActivePlayer = () => {
